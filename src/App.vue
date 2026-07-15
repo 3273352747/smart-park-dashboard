@@ -22,15 +22,16 @@ function backToHome() {
 
   <section v-else class="dashboard">
     <header class="dashboard-header">
-      <div>
+      <div class="system-title">
         <h1>{{ projectName }}</h1>
-        <p>运营总览/设备管理</p>
       </div>
       <button @click="backToHome">返回首页</button>
     </header>
 
-
-    <DeviceList />
+    <div class="content-shell">
+      <p class="breadcrumb">运营总览 <span></span>设备管理</p>
+      <DeviceList />
+    </div>
   </section>
 </template>
 
@@ -62,10 +63,40 @@ button {
 }
 
 .dashboard-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   margin-bottom: 24px;
+}
+
+.system-title {
+  grid-column: 2;
+  text-align: center;
+}
+
+.system-title h1 {
+  margin: 0;
+}
+
+.dashboard-header button{
+  grid-column: 3;
+  justify-self: end;
+}
+
+.content-shell {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  margin: 0 0 16px;
+  color: #667085;
+  text-align: left;
+}
+
+.breadcrumb span {
+  margin: 0 8px;
+  color: #98a2b3;
 }
 
 .dashboard-header h1,
@@ -74,7 +105,7 @@ button {
 }
 
 .dashboard-header p{
-  margin-top: 8px;
+  margin-top: 30px;
   color: #667085;
 }
 </style>

@@ -10,7 +10,7 @@ const deviceManager = [
 
 <template>
   <main>
-    <h1>智慧园区设备列表</h1>
+    <h2 class="section-title">设备列表</h2>
     <p>设备总数：{{ deviceManager.length }}</p>
 
     <u1>
@@ -38,5 +38,12 @@ li{
     margin: 10px 0;
     padding: 14px;
     border: 1px solid #ddd;
+}
+
+.section-title {
+    margin: 0 0 8px;
+    color: #0b2545;
+    font-size: 24px;
+    text-align: left;
 }
 </style>
