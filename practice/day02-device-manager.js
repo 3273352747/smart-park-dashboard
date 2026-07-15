@@ -41,16 +41,21 @@ let deviceManager = [
 // getTotalEnergy();
 // getTotalAlarmCount();
 
-deviceManager.filter(item => item.status === '告警中').forEach(item => console.log('告警设备名称:', item.name));//所有告警中的设备
+// deviceManager.filter(item => item.status === '告警中').forEach(item => console.log('告警设备名称:', item.name));//所有告警中的设备
 
-let device = deviceManager.map(item => item.name);
-console.log('设备名称:', device);//只包含设备名称的数组
-console.log('设备名称:',deviceManager.map(item => item.name));//合并写法
+// let device = deviceManager.map(item => item.name);
+// console.log('设备名称:', device);//只包含设备名称的数组
+// console.log('设备名称:',deviceManager.map(item => item.name));//合并写法
 
-let totalEnergy = deviceManager.reduce((sum,current) => sum + current.energy,0);
-console.log('能耗总和:', totalEnergy);//能耗总和
-console.log('能耗总和:',deviceManager.reduce((sum,current) => sum + current.energy,0));//合并写法
+// let totalEnergy = deviceManager.reduce((sum,current) => sum + current.energy,0);
+// console.log('能耗总和:', totalEnergy);//能耗总和
+// console.log('能耗总和:',deviceManager.reduce((sum,current) => sum + current.energy,0));//合并写法
 
-let onlineDevice = deviceManager.reduce((sum,current) => current.status === '运行中' ? sum +1 : sum,0);
-console.log('在线设备数量:', onlineDevice);//在线设备数量
-console.log('在线设备数量:',deviceManager.reduce((sum,current) => current.status === '运行中' ? sum +1 : sum,0));//合并写法
+// let onlineDevice = deviceManager.reduce((sum,current) => current.status === '运行中' ? sum +1 : sum,0);
+// console.log('在线设备数量:', onlineDevice);//在线设备数量
+// console.log('在线设备数量:',deviceManager.reduce((sum,current) => current.status === '运行中' ? sum +1 : sum,0));//合并写法
+
+const {name,status,energy} = deviceManager[0];
+console.log('设备:',name);
+console.log('状态:',status);
+console.log(`当前能耗: ${energy} Kwh`);
