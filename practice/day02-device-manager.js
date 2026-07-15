@@ -55,7 +55,16 @@ let deviceManager = [
 // console.log('在线设备数量:', onlineDevice);//在线设备数量
 // console.log('在线设备数量:',deviceManager.reduce((sum,current) => current.status === '运行中' ? sum +1 : sum,0));//合并写法
 
-const {name,status,energy} = deviceManager[0];
-console.log('设备:',name);
-console.log('状态:',status);
-console.log(`当前能耗: ${energy} Kwh`);
+// const {name,status,energy} = deviceManager[0];
+// console.log('设备:',name);
+// console.log('状态:',status);
+// console.log(`当前能耗: ${energy} Kwh`);
+
+function getDevices(){
+    return Promise.resolve(deviceManager);
+}
+async function showDevicesCount(){
+    const result = await getDevices();
+    console.log(`设备数量：${result.length}`);
+}
+showDevicesCount();
