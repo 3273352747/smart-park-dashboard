@@ -6,37 +6,51 @@ let deviceManager = [
     {name:'5号配电设备',code:'A-005',status:'运行中',energy:95,alarmCount:0}
 ]
 
-function printDeviceList(){
-    for (let i=0; i< deviceManager.length; i++){ 
-        console.log(`设备名称:${deviceManager[i].name}`,`状态:${deviceManager[i].status}`);
-    } 
-}
+// function printDeviceList(){
+//     for (let i=0; i< deviceManager.length; i++){ 
+//         console.log(`设备名称:${deviceManager[i].name}`,`状态:${deviceManager[i].status}`);
+//     } 
+// }
 
-function getOfflineDevices(){
-    for(let device of deviceManager){
-    if(device.status === '离线'){
-        console.log(`离线设备名称：${device.name}`);
-}
-}
-}
+// function getOfflineDevices(){
+//     for(let device of deviceManager){
+//     if(device.status === '离线'){
+//         console.log(`离线设备名称：${device.name}`);
+// }
+// }
+// }
 
-function getTotalEnergy(){
-    let totalEnergy = 0;
-    for(let device of deviceManager){
-   totalEnergy+=device.energy;
-    }
-console.log(`能耗总和: ${totalEnergy}`);
-}
+// function getTotalEnergy(){
+//     let totalEnergy = 0;
+//     for(let device of deviceManager){
+//    totalEnergy+=device.energy;
+//     }
+// console.log(`能耗总和: ${totalEnergy}`);
+// }
 
-function getTotalAlarmCount(){
-    let totalAlarmCount = 0;
-for(let device of deviceManager){
-   totalAlarmCount+=device.alarmCount;
-    }
-console.log(`告警总数: ${totalAlarmCount}`);
-}
+// function getTotalAlarmCount(){
+//     let totalAlarmCount = 0;
+// for(let device of deviceManager){
+//    totalAlarmCount+=device.alarmCount;
+//     }
+// console.log(`告警总数: ${totalAlarmCount}`);
+// }
 
-printDeviceList();
-getOfflineDevices();
-getTotalEnergy();
-getTotalAlarmCount();
+// printDeviceList();
+// getOfflineDevices();
+// getTotalEnergy();
+// getTotalAlarmCount();
+
+deviceManager.filter(item => item.status === '告警中').forEach(item => console.log('告警设备名称:', item.name));//所有告警中的设备
+
+let device = deviceManager.map(item => item.name);
+console.log('设备名称:', device);//只包含设备名称的数组
+console.log('设备名称:',deviceManager.map(item => item.name));//合并写法
+
+let totalEnergy = deviceManager.reduce((sum,current) => sum + current.energy,0);
+console.log('能耗总和:', totalEnergy);//能耗总和
+console.log('能耗总和:',deviceManager.reduce((sum,current) => sum + current.energy,0));//合并写法
+
+let onlineDevice = deviceManager.reduce((sum,current) => current.status === '运行中' ? sum +1 : sum,0);
+console.log('在线设备数量:', onlineDevice);//在线设备数量
+console.log('在线设备数量:',deviceManager.reduce((sum,current) => current.status === '运行中' ? sum +1 : sum,0));//合并写法
