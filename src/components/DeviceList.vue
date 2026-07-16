@@ -8,6 +8,7 @@ const deviceManager = [
   { name: '5号配电设备', code: 'A-005', status: '运行中', energy: 95, alarmCount: 0 },
 ]
 const activeStatus = ref('全部')
+const statusOptions = ['全部','运行中','离线','告警中']
 
 const filteredDevices = computed(() => {
   if(activeStatus.value === '全部'){
@@ -26,8 +27,7 @@ const filteredDevices = computed(() => {
     <p>设备总数：{{ deviceManager.length }}</p>
 
     <div class="filter-bar">
-      <button @click="activeStatus = '全部'">全部</button>
-      <button @click="activeStatus = '运行中'">运行中</button>
+      <button v-for="status in statusOptions" :key="status" class="filter-button" :class="{active: activeStatus === status}" @click="activeStatus = status">{{status}}</button>
     </div>
 
     <p>当前筛选状态：{{ activeStatus }}</p>
@@ -64,5 +64,26 @@ li{
     color: #0b2545;
     font-size: 24px;
     text-align: left;
+}
+
+.filter-bar{
+  display: flex;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.filter-button{
+  padding: 8px 14px;
+  color: #475467;
+  background: #fff;
+  border: 1px solid #d0d5dd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-button.active{
+  color: #fff;
+  background: #2e74b5;
+  border-color: #2e74b5;
 }
 </style>
