@@ -19,12 +19,46 @@ const filteredDevices = computed(() => {
     return device.status === activeStatus.value
   })
 })
+
+const totalDevices = computed(() => deviceManager.length)
+
+const runningCount = computed(() => {
+  return deviceManager.filter((device) => device.status === '运行中').length
+})
+
+const offlineCount = computed(() => {
+  return deviceManager.filter((device) => device.status === '离线').length
+})
+
+const alarmingCount = computed(() =>{
+  return deviceManager.filter((device) => device.status === '告警中').length
+})
 </script>
 
 <template>
   <main>
     <h2 class="section-title">设备列表</h2>
-    <p>设备总数：{{ deviceManager.length }}</p>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span>设备总数</span>
+        <strong>{{ totalDevices }}</strong>
+      </div>
+
+      <div class="stat-card running">
+        <span>运行中</span>
+        <strong>{{ runningCount }}</strong>
+      </div>
+
+      <div class="stat-card offline">
+        <span>离线</span>
+        <strong>{{ offlineCount }}</strong>
+      </div>
+
+      <div class="stat-card alarming">
+        <span>告警中</span>
+        <strong>{{ alarmingCount }}</strong>
+      </div>
+    </div>
 
     <div class="filter-bar">
       <button v-for="status in statusOptions" :key="status" class="filter-button" :class="{active: activeStatus === status}" @click="activeStatus = status">{{status}}</button>
@@ -85,5 +119,44 @@ li{
   color: #fff;
   background: #2e74b5;
   border-color: #2e74b5;
+}
+
+.stats-grid{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.stat-card{
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e4e7ec;
+  border-radius: 6px;
+}
+
+.stat-card span{
+  display: block;
+  color: #667085;
+  font-size: 14px;
+}
+
+.stat-card strong{
+  display: block;
+  margin-top: 8px;
+  color: #0b2545;
+  font-size: 28px;
+}
+
+.running strong{
+  color: #16a34a;
+}
+
+.offline strong{
+  color: #667085;
+}
+
+.alarming strong{
+  color: #dc2626;
 }
 </style>
