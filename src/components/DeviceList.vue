@@ -39,42 +39,49 @@ const alarmingCount = computed(() =>{
   <main>
     <h2 class="section-title">设备列表</h2>
     <div class="stats-grid">
-      <div class="stat-card">
+    <el-card class="stat-card">
         <span>设备总数</span>
         <strong>{{ totalDevices }}</strong>
-      </div>
+      </el-card>
 
-      <div class="stat-card running">
+      <el-card class="stat-card running">
         <span>运行中</span>
         <strong>{{ runningCount }}</strong>
-      </div>
+      </el-card>
 
-      <div class="stat-card offline">
+      <el-card class="stat-card offline">
         <span>离线</span>
         <strong>{{ offlineCount }}</strong>
-      </div>
+      </el-card>
 
-      <div class="stat-card alarming">
+      <el-card class="stat-card alarming">
         <span>告警中</span>
         <strong>{{ alarmingCount }}</strong>
+      </el-card>
       </div>
-    </div>
 
     <div class="filter-bar">
-      <button v-for="status in statusOptions" :key="status" class="filter-button" :class="{active: activeStatus === status}" @click="activeStatus = status">{{status}}</button>
+      <el-button v-for="status in statusOptions" :key="status" :type="activeStatus === status ? 'primary':'default'" @click="activeStatus = status">{{status}}</el-button>
     </div>
 
     <p>当前筛选状态：{{ activeStatus }}</p>
 
-    <ul>
-        <li v-for="device in filteredDevices" :key="device.code">
-            <strong>{{ device.name }}</strong>
-            <span>编号：{{ device.code }}</span>
-            <span>状态：{{ device.status }}</span>
-            <span>能耗：{{ device.energy }} KWh</span>
-            <span>告警：{{ device.alarmCount }} 条</span>
-        </li>
-    </ul>
+        <el-table :data="filteredDevices" border style="width:100%">
+            <el-table-column prop="name" label="设备名称"/>
+            <el-table-column prop="code" label="设备编号"/>
+            <el-table-column prop="energy" label="能耗(kWh)"/>
+            <el-table-column prop="alarmCount" label="告警数"/>
+
+            <el-table-column label="状态">
+              <template #default="{ row }">
+                <el-tag :type="row.status === '运行中' ? 'success' : row.status === '离线' ? 'info' : 'danger'">
+                  {{ row.status }}
+                </el-tag>
+              </template>
+            </el-table-column>
+        </el-table>
+
+    <p v-if="filteredDevices.length === 0" class="empty-text">暂无符合条件的设备</p> 
   </main>
   </template>
 
@@ -84,14 +91,6 @@ const alarmingCount = computed(() =>{
     margin: 40px auto;
     font-family: Arial, sans-serif;
   }
-
-li{
-    display: flex;
-    gap: 16px;
-    margin: 10px 0;
-    padding: 14px;
-    border: 1px solid #ddd;
-}
 
 .section-title {
     margin: 0 0 8px;
@@ -104,21 +103,6 @@ li{
   display: flex;
   gap: 10px;
   margin: 16px 0;
-}
-
-.filter-button{
-  padding: 8px 14px;
-  color: #475467;
-  background: #fff;
-  border: 1px solid #d0d5dd;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.filter-button.active{
-  color: #fff;
-  background: #2e74b5;
-  border-color: #2e74b5;
 }
 
 .stats-grid{
@@ -158,5 +142,11 @@ li{
 
 .alarming strong{
   color: #dc2626;
+}
+
+.empty-text{
+  margin-top: 24px;
+  color: #98a2b3;
+  text-align: center;
 }
 </style>

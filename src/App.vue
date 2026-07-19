@@ -29,7 +29,7 @@ function backToHome() {
     </header>
 
     <div class="content-shell">
-      <p class="breadcrumb">运营总览 <span></span>设备管理</p>
+      <p class="breadcrumb">运营总览 <span>/</span>设备管理</p>
       <DeviceList />
     </div>
   </section>
@@ -99,13 +99,12 @@ button {
   color: #98a2b3;
 }
 
-.dashboard-header h1,
-.dashboard-header p {
+.dashboard-header h1 {
   margin: 0;
 }
 
-.dashboard-header p{
-  margin-top: 30px;
-  color: #667085;
+.page p {
+    color: #0b2545;
+    margin: 12px 0 12px;
 }
 </style>
