@@ -1,4 +1,5 @@
 <script setup>
+import { el } from "element-plus/es/locales.mjs"
 import {ref,computed} from "vue"
 const deviceManager = [
   { name: '1号配电设备', code: 'A-001', status: '运行中', energy: 85, alarmCount: 1 },
@@ -60,12 +61,12 @@ const alarmingCount = computed(() =>{
       </el-card>
       </div>
 
-    <div class="filter-bar">
+    <div class="toolbar">
+      <span  class="toolbar-label">设备状态</span>
       <el-button v-for="status in statusOptions" :key="status" :type="activeStatus === status ? 'primary':'default'" @click="activeStatus = status">{{status}}</el-button>
     </div>
 
-    <p>当前筛选状态：{{ activeStatus }}</p>
-
+      <el-card class="table-card">
         <el-table :data="filteredDevices" border style="width:100%">
             <el-table-column prop="name" label="设备名称"/>
             <el-table-column prop="code" label="设备编号"/>
@@ -80,7 +81,8 @@ const alarmingCount = computed(() =>{
               </template>
             </el-table-column>
         </el-table>
-
+      </el-card>
+        
     <p v-if="filteredDevices.length === 0" class="empty-text">暂无符合条件的设备</p> 
   </main>
   </template>
@@ -99,10 +101,20 @@ const alarmingCount = computed(() =>{
     text-align: left;
 }
 
-.filter-bar{
+.toolbar{
   display: flex;
+  align-items: center;
   gap: 10px;
-  margin: 16px 0;
+  margin: 20px 0;
+}
+
+.toolbar-label {
+  color: #344054;
+  font-weight: 600;
+}
+
+.table-card {
+  margin-top: 16px;
 }
 
 .stats-grid{
