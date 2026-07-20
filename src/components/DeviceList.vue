@@ -1,5 +1,4 @@
 <script setup>
-import { el } from "element-plus/es/locales.mjs"
 import {ref,computed} from "vue"
 const deviceManager = [
   { name: '1号配电设备', code: 'A-001', status: '运行中', energy: 85, alarmCount: 1 },

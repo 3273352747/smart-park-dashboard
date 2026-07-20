@@ -1,0 +1,71 @@
+<script setup>
+import DeviceList from '../components/DeviceList.vue'
+</script>
+
+<template>
+  <section class="dashboard">
+    <header class="dashboard-header">
+      <div class="system-title">
+        <h1>智慧园区运营数据可视化平台</h1>
+      </div>
+
+      <RouterLink to="/" class="back-button">返回首页</RouterLink>
+    </header>
+
+    <div class="content-shell">
+      <p class="breadcrumb">运营总览 <span>/</span> 设备管理</p>
+      <DeviceList />
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.dashboard {
+  min-height: 100vh;
+  padding: 32px 48px;
+  background: #f4f7fb;
+}
+
+.dashboard-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.system-title {
+  grid-column: 2;
+  text-align: center;
+}
+
+.system-title h1 {
+  margin: 0;
+  color: #0b2545;
+}
+
+.back-button {
+    grid-column: 3;
+    justify-self: end;
+    padding: 10px 16px;
+    color: #fff;
+    background: #2e74b5;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.content-shell {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  margin: 0 0 16px;
+  color: #667085;
+  text-align: left;
+}
+
+.breadcrumb span {
+  margin: 0 8px;
+  color: #98a2b3;
+}
+</style>
