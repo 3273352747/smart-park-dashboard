@@ -1,6 +1,8 @@
 <script setup>
 import {ref,computed} from "vue"
 import { deviceManager } from "../data/devices"
+import StatusFilter from "./StatusFilter.vue"
+import StatusFilter from "./StatusFilter.vue"
 const activeStatus = ref('全部')
 const statusOptions = ['全部','运行中','离线','告警中']
 
@@ -27,6 +29,10 @@ const offlineCount = computed(() => {
 const alarmingCount = computed(() =>{
   return deviceManager.filter((device) => device.status === '告警中').length
 })
+
+function handleStatusChange(status){
+  activeStatus.value = status
+}
 </script>
 
 <template>
@@ -54,10 +60,11 @@ const alarmingCount = computed(() =>{
       </el-card>
       </div>
 
-    <div class="toolbar">
-      <span  class="toolbar-label">设备状态</span>
-      <el-button v-for="status in statusOptions" :key="status" :type="activeStatus === status ? 'primary':'default'" @click="activeStatus = status">{{status}}</el-button>
-    </div>
+    <status-filter
+      :status-options="statusOptions"
+      :active-status="activeStatus"
+      @change="handleStatusChange"
+      />
 
       <el-card class="table-card">
         <el-table :data="filteredDevices" border style="width:100%">
@@ -92,18 +99,6 @@ const alarmingCount = computed(() =>{
     color: #0b2545;
     font-size: 24px;
     text-align: left;
-}
-
-.toolbar{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.toolbar-label {
-  color: #344054;
-  font-weight: 600;
 }
 
 .table-card {
