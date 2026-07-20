@@ -1,6 +1,7 @@
 import { createRouter,createWebHistory } from "vue-router"
 import HomeView from '../views/HomeView.vue'
 import DeviceView from '../views/DeviceView.vue'
+import OverviewView from "../views/overviewView.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -14,6 +15,11 @@ const router = createRouter({
             path: '/devices',
             name: 'devices',
             component: DeviceView,
+        },
+        {
+            path: '/overview',
+            name: 'overview',
+            component: OverviewView,
         },
     ],
 })

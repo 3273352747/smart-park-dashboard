@@ -13,7 +13,10 @@ import DeviceList from '../components/DeviceList.vue'
     </header>
 
     <div class="content-shell">
-      <p class="breadcrumb">运营总览 <span>/</span> 设备管理</p>
+      <nav class="page-nav">
+        <RouterLink to="/overview">运营总览</RouterLink>
+        <RouterLink to="/devices">设备管理</RouterLink>
+      </nav>
       <DeviceList />
     </div>
   </section>
@@ -58,14 +61,19 @@ import DeviceList from '../components/DeviceList.vue'
   margin: 0 auto;
 }
 
-.breadcrumb {
-  margin: 0 0 16px;
-  color: #667085;
-  text-align: left;
+.page-nav {
+    display: flex;
+    gap: 24px;
+    margin: 0 0 24px;
 }
 
-.breadcrumb span {
-  margin: 0 8px;
-  color: #98a2b3;
+.page-nav a {
+    color: #667085;
+    text-decoration: none;
+}
+
+.page-nav .router-link-active {
+    color: #2e74b5;
+    font-weight: 600;
 }
 </style>
