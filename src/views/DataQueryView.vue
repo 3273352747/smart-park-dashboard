@@ -1,5 +1,49 @@
 <script setup>
+import { reactive, computed } from 'vue'
 import { deviceManager } from '../data/devices'
+
+const queryForm = reactive({
+    dateRange: [],
+    status: '全部',
+})
+
+const queryParams = reactive({
+    dateRange: [],
+    status: '全部',
+})
+
+const filteredDevices = computed(() => {
+    let result = deviceManager
+
+    if(queryParams.status !== '全部'){
+        result = result.filter((device) => {
+            return device.status === queryParams.status
+        })
+    }
+
+    if(queryParams.dateRange.length === 2){
+        const [startDate,endDate] = queryParams.dateRange
+
+        result = result.filter((device) => {
+            return device.recordDate >= startDate && device.recordDate <= endDate
+        })
+    }
+    return result
+})
+
+function handleQuery() {
+    queryParams.status = queryForm.status
+
+    queryParams.dateRange = queryForm.dateRange
+    ? [...queryForm.dateRange] : []
+}
+
+function handleReset() {
+    queryForm.status = '全部'
+    queryForm.dateRange = []
+
+    handleQuery()
+}
 
 function getStatusTagType(status) {
     if(status === '运行中') return 'success'
@@ -31,7 +75,9 @@ function getStatusTagType(status) {
         <el-form :inline="true">
             <el-form-item label="查询日期">
                 <el-date-picker
+                v-model="queryForm.dateRange"
                 type="daterange"
+                value-format="YYYY-MM-DD"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -39,7 +85,7 @@ function getStatusTagType(status) {
             </el-form-item>
 
             <el-form-item label="设备状态">
-                <el-select placeholder="请选择状态" style="width: 140px">
+                <el-select v-model="queryForm.status" placeholder="请选择状态" style="width: 140px">
                     <el-option label="全部" value="全部" />
                     <el-option label="运行中" value="运行中" />
                     <el-option label="离线" value="离线" />
@@ -48,8 +94,8 @@ function getStatusTagType(status) {
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary">查询</el-button>
-                <el-button>重置</el-button>
+                <el-button type="primary" @click="handleQuery">查询</el-button>
+                <el-button @click="handleReset">重置</el-button>
             </el-form-item>
         </el-form>
       </el-card>
@@ -57,9 +103,10 @@ function getStatusTagType(status) {
       <el-card class="table-card">
         <template #header>查询结果</template>
 
-        <el-table :data="deviceManager" border style="width: 100%">
+        <el-table :data="filteredDevices" border style="width: 100%" empty-text="暂无符合条件的数据">
             <el-table-column prop="name" label="设备名称" />
             <el-table-column prop="code" label="设备编号" />
+            <el-table-column prop="recordDate" label="数据日期" />
             <el-table-column prop="energy" label="当前能耗(kWh)" />
 
             <el-table-column label="状态">
