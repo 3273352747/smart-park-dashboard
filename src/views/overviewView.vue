@@ -99,11 +99,14 @@ const alarmDevices = computed(() => {
   margin-bottom: 24px;
 }
 
-.dashboard-header h1 {
+.system-title {
     grid-column: 2;
+    text-align: center;
+}
+
+.system-title h1 {
     margin: 0;
     color: #0b2545;
-    text-align: center;
 }
 
 .back-button {
@@ -119,6 +122,12 @@ const alarmDevices = computed(() => {
 .content-shell {
   max-width: 980px;
   margin: 0 auto;
+}
+
+.page-nav {
+    display: flex;
+    gap: 24px;
+    margin: 0 0 24px;
 }
 
 .page-nav a {

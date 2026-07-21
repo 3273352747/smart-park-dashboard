@@ -2,7 +2,6 @@
 import {ref,computed} from "vue"
 import { deviceManager } from "../data/devices"
 import StatusFilter from "./StatusFilter.vue"
-import StatusFilter from "./StatusFilter.vue"
 const activeStatus = ref('全部')
 const statusOptions = ['全部','运行中','离线','告警中']
 
@@ -60,7 +59,7 @@ function handleStatusChange(status){
       </el-card>
       </div>
 
-    <status-filter
+    <StatusFilter
       :status-options="statusOptions"
       :active-status="activeStatus"
       @change="handleStatusChange"
