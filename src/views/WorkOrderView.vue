@@ -1,6 +1,6 @@
 <script setup>
 import {ref, reactive} from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage,ElMessageBox } from 'element-plus'
 import { deviceManager } from '../data/devices'
 
 const workOrders = ref([{
@@ -119,6 +119,28 @@ function getPriorityTagType(priority){
     if(priority === '中') return 'warning'
     return 'info'
 }
+
+async function handleDelete(row) {
+    try{
+        await ElMessageBox.confirm(
+            `确定删除工单“${row.title}”吗？`,
+            '删除确认',
+            {
+                confirmButtonText: '删除',
+                cancelButtonText: '取消',
+                type: 'warning',
+            },
+        )
+
+        workOrders.value = workOrders.value.filter((order) => {
+            return order.id !== row.id
+        })
+
+        ElMessage.success('工单已删除')
+    } catch{
+
+    }
+}
 </script>
 <template>
     <section class="dashboard">
@@ -175,6 +197,12 @@ function getPriorityTagType(priority){
                 size="small"
                 @click="openEditDialog(row)"
                 >编辑</el-button>
+                <el-button
+                type="danger"
+                link
+                size="small"
+                @click="handleDelete(row)"
+                >删除</el-button>
             </template>
         </el-table-column>
 
