@@ -1,6 +1,6 @@
 <script setup>
-import { reactive, computed,ref,watch } from 'vue'
-import { deviceManager } from '../data/devices'
+import { reactive, computed,ref,watch,onMounted } from 'vue'
+import { getDeviceRecords } from '../api/device'
 
 const queryForm = reactive({
     dateRange: [],
@@ -15,8 +15,25 @@ const queryParams = reactive({
 const currentPage = ref(1)
 const pageSize = 3
 
+const deviceRecords = ref([])
+const loading = ref(false)
+
+async function loadDeviceRecords() {
+    loading.value = true
+
+    try{
+        deviceRecords.value = await getDeviceRecords()
+    } finally{
+        loading.value = false
+    }
+}
+
+onMounted(() => {
+    loadDeviceRecords()
+})
+
 const filteredDevices = computed(() => {
-    let result = deviceManager
+    let result = deviceRecords.value
 
     if(queryParams.status !== '全部'){
         result = result.filter((device) => {
@@ -124,7 +141,13 @@ watch(
 
         <template #header>查询结果</template>
 
-        <el-table :data="paginatedDevices" border style="width: 100%" empty-text="暂无符合条件的数据">
+        <el-table 
+        v-loading="loading"
+        element-loading-text="数据加载中..."
+        :data="paginatedDevices"
+         border 
+         style="width: 100%"
+         >
             <el-table-column prop="name" label="设备名称" />
             <el-table-column prop="code" label="设备编号" />
             <el-table-column prop="recordDate" label="数据日期" />
