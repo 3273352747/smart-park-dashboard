@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed } from 'vue'
+import { reactive, computed,ref,watch } from 'vue'
 import { deviceManager } from '../data/devices'
 
 const queryForm = reactive({
@@ -11,6 +11,9 @@ const queryParams = reactive({
     dateRange: [],
     status: '全部',
 })
+
+const currentPage = ref(1)
+const pageSize = 3
 
 const filteredDevices = computed(() => {
     let result = deviceManager
@@ -29,6 +32,13 @@ const filteredDevices = computed(() => {
         })
     }
     return result
+})
+
+const paginatedDevices = computed(() => {
+    const start = (currentPage.value-1)*pageSize
+    const end = start + pageSize
+
+    return filteredDevices.value.slice(start,end)
 })
 
 function handleQuery() {
@@ -50,6 +60,16 @@ function getStatusTagType(status) {
     if(status === '离线') return 'info'
     return 'danger'
 }
+
+watch(
+    () => [
+        queryParams.status,
+        queryParams.dateRange.join('|'),
+    ],
+    () => {
+        currentPage.value = 1
+    },
+)
 </script>
 <template>
     <section class="dashboard">
@@ -101,9 +121,10 @@ function getStatusTagType(status) {
       </el-card>
 
       <el-card class="table-card">
+
         <template #header>查询结果</template>
 
-        <el-table :data="filteredDevices" border style="width: 100%" empty-text="暂无符合条件的数据">
+        <el-table :data="paginatedDevices" border style="width: 100%" empty-text="暂无符合条件的数据">
             <el-table-column prop="name" label="设备名称" />
             <el-table-column prop="code" label="设备编号" />
             <el-table-column prop="recordDate" label="数据日期" />
@@ -119,6 +140,16 @@ function getStatusTagType(status) {
 
             <el-table-column prop="alarmCount" label="告警数" />
         </el-table>
+
+    <div class="pagination-wrapper">
+        <el-pagination
+        v-model:current-page="currentPage"
+        :page-size="pageSize"
+        :total="filteredDevices.length"
+        layout="total,prev,pager,next"
+        />
+    </div>
+
       </el-card>
     </main>
     </section>
@@ -187,5 +218,11 @@ function getStatusTagType(status) {
 .query-card,
 .table-card {
     margin-bottom: 16px;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
 }
 </style>
