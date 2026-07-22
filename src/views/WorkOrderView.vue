@@ -29,6 +29,8 @@ const workOrders = ref([{
   },
 ])
 
+const nextOrderNumber = ref(4)
+
 const deviceOptions = deviceManager.map((device) => device.name)
 const priorityOptions = ['高','中','低']
 
@@ -103,12 +105,13 @@ async function handleSubmit() {
     ElMessage.success('工单编辑成功')
     } else{
         const newOrder = {
-        id: `WO-${String(workOrders.value.length+1).padStart(3,'0')}`,
+        id: `WO-${String(nextOrderNumber).padStart(3,'0')}`,
         ...workOrderForm,
         status: '待处理',
     }
     
     workOrders.value.unshift(newOrder)
+    nextOrderNumber.value+=1
     ElMessage.success('工单创建成功')    
     }
     dialogVisible.value = false
@@ -168,7 +171,7 @@ async function handleDelete(row) {
       </div>
 
       <el-card class="table-card">
-        <el-table :data="workOrders" border style="width: 100%;">
+        <el-table :data="workOrders" border style="width: 100%" empty-text="暂无工单，请点击“新建工单”添加">
             <el-table-column prop="id" label="工单编号" width="110%" />
             <el-table-column prop="title" label="工单标题" min-width="220%" />
             <el-table-column prop="device" label="关联设备" min-width="160%" />
