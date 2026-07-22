@@ -35,6 +35,9 @@ const priorityOptions = ['高','中','低']
 const dialogVisible = ref(false)
 const formRef = ref()
 
+const editingId = ref(null)
+const dialogTitle = ref('新建工单')
+
 const workOrderForm = reactive({
     title: '',
     device: '',
@@ -67,27 +70,48 @@ function resetForm() {
     formRef.value?.clearValidate()
 }
 
+function openEditDialog(row) {
+    editingId.value = row.id
+    dialogTitle.value = '编辑工单'
+
+    Object.assign(workOrderForm,{
+        title: row.title,
+        device: row.device,
+        priority: row.priority,
+        planDate: row.planDate,
+    })
+
+    formRef.value?.clearValidate()
+    dialogVisible.value = true
+}
+
 function openCreateDialog() {
+    editingId.value = null
+    dialogTitle.value = '新建工单'
+
     resetForm()
     dialogVisible.value = true
 }
 
 async function handleSubmit() {
-    const valid = await formRef.value.validate().catch(() => false)
+    if(editingId.value){
+    const targetOrder = workOrders.value.find((order) => {
+        return order.id === editingId.value
+    })
 
-    if(!valid) {
-        return
-    }
-
-    const newOrder = {
+    Object.assign(targetOrder,workOrderForm)
+    ElMessage.success('工单编辑成功')
+    } else{
+        const newOrder = {
         id: `WO-${String(workOrders.value.length+1).padStart(3,'0')}`,
         ...workOrderForm,
         status: '待处理',
     }
-
+    
     workOrders.value.unshift(newOrder)
+    ElMessage.success('工单创建成功')    
+    }
     dialogVisible.value = false
-    ElMessage.success('工单创建成功')
 }
 
 function getPriorityTagType(priority){
@@ -111,6 +135,7 @@ function getPriorityTagType(priority){
         <RouterLink to="/overview">运营总览</RouterLink>
         <RouterLink to="/devices">设备管理</RouterLink>
         <RouterLink to="/work-order">工单管理</RouterLink>
+        <RouterLink to="/data-query">数据查询</RouterLink>
       </nav>
 
       <div class="page-title-row">
@@ -141,10 +166,22 @@ function getPriorityTagType(priority){
                 </el-tag>
             </template>
         </el-table-column>
+
+        <el-table-column label="操作" width="130">
+            <template #default="{row}">
+                <el-button
+                type="primary"
+                link
+                size="small"
+                @click="openEditDialog(row)"
+                >编辑</el-button>
+            </template>
+        </el-table-column>
+
         </el-table>
       </el-card>
 
-      <el-dialog v-model="dialogVisible" title="新建工单" width="520px">
+      <el-dialog v-model="dialogVisible" title="dialogTitle" width="520px">
         <el-form
         ref="formRef"
         :model="workOrderForm"

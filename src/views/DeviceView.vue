@@ -16,6 +16,8 @@ import DeviceList from '../components/DeviceList.vue'
       <nav class="page-nav">
         <RouterLink to="/overview">运营总览</RouterLink>
         <RouterLink to="/devices">设备管理</RouterLink>
+        <RouterLink to="/work-order">工单管理</RouterLink>
+        <RouterLink to="/data-query">数据查询</RouterLink>
       </nav>
       <DeviceList />
     </div>
