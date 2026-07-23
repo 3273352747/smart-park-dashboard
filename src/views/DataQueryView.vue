@@ -17,12 +17,17 @@ const pageSize = 3
 
 const deviceRecords = ref([])
 const loading = ref(false)
+const errorMessage = ref('')
 
-async function loadDeviceRecords() {
+async function loadDeviceRecords(shouldFail = false) {
     loading.value = true
+    errorMessage.value = ''
 
     try{
-        deviceRecords.value = await getDeviceRecords()
+        deviceRecords.value = await getDeviceRecords(shouldFail)
+    } catch(error){
+        deviceRecords.value = []
+        errorMessage.value = error.message || '数据加载失败，请稍后重试'
     } finally{
         loading.value = false
     }
@@ -141,6 +146,17 @@ watch(
 
         <template #header>查询结果</template>
 
+        <el-result
+        v-if="errorMessage"
+        icon="error"
+        title="数据加载失败"
+        :sub-title="errorMessage"
+        >
+        <template #extra>
+            <el-button type="primary" @click="loadDeviceRecords">重新加载</el-button>
+        </template>
+    </el-result>
+        <template v-if="!errorMessage">
         <el-table 
         v-loading="loading"
         element-loading-text="数据加载中..."
@@ -172,6 +188,7 @@ watch(
         layout="total,prev,pager,next"
         />
     </div>
+    </template>
 
       </el-card>
     </main>
