@@ -109,7 +109,7 @@ async function handleSubmit() {
     ElMessage.success('工单编辑成功')
     } else{
         const newOrder = {
-        id: `WO-${String(nextOrderNumber).padStart(3,'0')}`,
+        id: `WO-${String(nextOrderNumber.value).padStart(3,'0')}`,
         ...workOrderForm,
         status: '待处理',
     }
