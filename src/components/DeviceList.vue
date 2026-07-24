@@ -6,6 +6,9 @@ import StatusFilter from "./StatusFilter.vue"
 const activeStatus = ref('全部')
 const statusOptions = ['全部','运行中','离线','告警中']
 
+const detailVisible = ref(false)
+const selectedDevice = ref(null)
+
 const route = useRoute()
 
 watch(
@@ -42,6 +45,21 @@ const alarmingCount = computed(() =>{
 
 function handleStatusChange(status){
   activeStatus.value = status
+}
+
+function openDeviceDetail(device) {
+  selectedDevice.value = device
+  detailVisible.value = true
+}
+
+function getStatusTagType(status) {
+  const typeMap = {
+    运行中: 'success',
+    离线: 'info',
+    告警中: 'danger',
+  }
+
+  return typeMap[status] || 'info'
 }
 </script>
 
@@ -85,13 +103,47 @@ function handleStatusChange(status){
 
             <el-table-column label="状态">
               <template #default="{ row }">
-                <el-tag :type="row.status === '运行中' ? 'success' : row.status === '离线' ? 'info' : 'danger'">
+                <el-tag :type="getStatusTagType(row.status)">
                   {{ row.status }}
                 </el-tag>
               </template>
             </el-table-column>
+
+            <el-table-column label="操作" width="100">
+              <template #default="{ row }">
+                <el-button link type="primary" @click="openDeviceDetail(row)">
+                  详情
+                </el-button>
+              </template>
+            </el-table-column>
         </el-table>
       </el-card>
+
+      <el-drawer v-model="detailVisible" title="设备详情" size="380px">
+        <el-descriptions v-if="selectedDevice" :column="1" border>
+          <el-descriptions-item label="设备名称">
+            {{ selectedDevice.name }}
+          </el-descriptions-item>
+
+        <el-descriptions-item label="设备编号">
+          {{ selectedDevice.code }}
+        </el-descriptions-item>
+
+        <el-descriptions-item label="运行状态">
+          <el-tag :type="getStatusTagType(selectedDevice.status)">
+            {{ selectedDevice.status }}
+          </el-tag>
+        </el-descriptions-item>
+
+        <el-descriptions-item label="当前能耗">
+          {{ selectedDevice.energy }} kWh
+        </el-descriptions-item>
+
+        <el-descriptions-item label="告警数量">
+          {{ selectedDevice.alarmCount }} 条
+        </el-descriptions-item>
+        </el-descriptions>
+      </el-drawer>
         
     <p v-if="filteredDevices.length === 0" class="empty-text">暂无符合条件的设备</p> 
   </main>
