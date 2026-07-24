@@ -99,6 +99,7 @@ async function handleSubmit() {
     const valid = await formRef.value.validate().catch(() => false)
 
     if(!valid) return
+
     if(editingId.value){
     const targetOrder = workOrders.value.find((order) => {
         return order.id === editingId.value
@@ -175,11 +176,11 @@ async function handleDelete(row) {
 
       <el-card class="table-card">
         <el-table :data="workOrders" border style="width: 100%" empty-text="暂无工单，请点击“新建工单”添加">
-            <el-table-column prop="id" label="工单编号" width="110%" />
-            <el-table-column prop="title" label="工单标题" min-width="220%" />
-            <el-table-column prop="device" label="关联设备" min-width="160%" />
+            <el-table-column prop="id" label="工单编号" width="110" />
+            <el-table-column prop="title" label="工单标题" min-width="220" />
+            <el-table-column prop="device" label="关联设备" min-width="160" />
 
-            <el-table-column label="优先级" width="100%">
+            <el-table-column label="优先级" width="100">
                 <template #default="{row}">
                     <el-tag :type="getPriorityTagType(row.priority)">{{ row.priority }}</el-tag>
                 </template>
@@ -215,7 +216,7 @@ async function handleDelete(row) {
         </el-table>
       </el-card>
 
-      <el-dialog v-model="dialogVisible" title="dialogTitle" width="520px">
+      <el-dialog v-model="dialogVisible" :title="dialogTitle" width="520px">
         <el-form
         ref="formRef"
         :model="workOrderForm"

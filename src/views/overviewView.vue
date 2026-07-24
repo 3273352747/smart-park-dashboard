@@ -1,10 +1,21 @@
 <script setup>
 import { computed } from "vue"
 import { deviceManager } from "../data/devices"
-import { RouterLink } from "vue-router"
+import { RouterLink,useRouter } from "vue-router"
 import EnergyBarChart from "../components/EnergyBarChart.vue"
 import DeviceStatusChart from "../components/DeviceStatusChart.vue"
 import EnergyTrendChart from "../components/EnergyTrendChart.vue"
+
+const router = useRouter()
+
+function goToAlarmDevices() {
+  router.push({
+    path: '/devices',
+    query: {
+      status: '告警中',
+    },
+  })
+}
 
 const totalDevices = computed(() => deviceManager.length)
 
@@ -100,7 +111,7 @@ const alarmDevices = computed(() => {
 
         <p v-if="alarmDevices.length === 0">当前没有告警设备</p>
 
-        <div v-for="device in alarmDevices" :key="device.code" class="alarm-item">
+        <div v-for="device in alarmDevices" :key="device.code" class="alarm-item" @click="goToAlarmDevices">
             <span>{{ device.name }}</span>
             <el-tag type="danger">告警 {{ device.alarmCount }} 条</el-tag>
         </div>
@@ -220,5 +231,9 @@ const alarmDevices = computed(() => {
     align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #e4e7ec;
+    cursor: pointer;
+}
+.alarm-item:hover {
+  background: #f8fafc;
 }
 </style>

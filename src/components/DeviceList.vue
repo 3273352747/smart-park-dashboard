@@ -1,9 +1,20 @@
 <script setup>
-import {ref,computed} from "vue"
+import {ref,computed,watch} from "vue"
+import { useRoute } from 'vue-router'
 import { deviceManager } from "../data/devices"
 import StatusFilter from "./StatusFilter.vue"
 const activeStatus = ref('全部')
 const statusOptions = ['全部','运行中','离线','告警中']
+
+const route = useRoute()
+
+watch(
+  () => route.query.status,
+  (status) => {
+    activeStatus.value = statusOptions.includes(status) ? status : '全部'
+  },
+  { immediate: true }
+)
 
 const filteredDevices = computed(() => {
   if(activeStatus.value === '全部'){
