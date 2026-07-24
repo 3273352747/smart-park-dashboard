@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { deviceManager } from "../data/devices"
 import StatusFilter from "./StatusFilter.vue"
 const activeStatus = ref('全部')
+const keyword = ref('')
 const statusOptions = ['全部','运行中','离线','告警中']
 
 const detailVisible = ref(false)
@@ -20,13 +21,26 @@ watch(
 )
 
 const filteredDevices = computed(() => {
-  if(activeStatus.value === '全部'){
-    return deviceManager
+  let result = deviceManager
+
+  if(activeStatus.value !== '全部'){
+    result = result.filter((device) => {
+      return device.status === activeStatus.value
+    })
   }
 
-  return deviceManager.filter((device) => {
-    return device.status === activeStatus.value
-  })
+  const searchText = keyword.value.trim()
+
+  if(searchText) {
+    result = result.filter((device) => {
+      return (
+        device.name.includes(searchText) || 
+        device.code.includes(searchText)
+      )
+    })
+  }
+
+  return result
 })
 
 const totalDevices = computed(() => deviceManager.length)
@@ -87,6 +101,13 @@ function getStatusTagType(status) {
         <strong>{{ alarmingCount }}</strong>
       </el-card>
       </div>
+
+      <el-input
+      v-model="keyword"
+      clearable
+      placeholder="请输入设备名称或编号"
+      class="search-input"
+      />
 
     <StatusFilter
       :status-options="statusOptions"
@@ -210,5 +231,10 @@ function getStatusTagType(status) {
   margin-top: 24px;
   color: #98a2b3;
   text-align: center;
+}
+
+.search-input {
+  width: 280px;
+  margin-top: 16px;
 }
 </style>
