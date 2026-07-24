@@ -153,7 +153,7 @@ watch(
         :sub-title="errorMessage"
         >
         <template #extra>
-            <el-button type="primary" @click="loadDeviceRecords">重新加载</el-button>
+            <el-button type="primary" @click="loadDeviceRecords()">重新加载</el-button>
         </template>
     </el-result>
         <template v-if="!errorMessage">

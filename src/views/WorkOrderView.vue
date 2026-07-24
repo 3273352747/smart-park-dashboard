@@ -96,6 +96,9 @@ function openCreateDialog() {
 }
 
 async function handleSubmit() {
+    const valid = await formRef.value.validate().catch(() => false)
+
+    if(!valid) return
     if(editingId.value){
     const targetOrder = workOrders.value.find((order) => {
         return order.id === editingId.value

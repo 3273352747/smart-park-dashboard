@@ -2,7 +2,7 @@
 import { computed } from "vue"
 import { deviceManager } from "../data/devices"
 import { RouterLink } from "vue-router"
-
+import EnergyBarChart from "../components/EnergyBarChart.vue"
 
 const totalDevices = computed(() => deviceManager.length)
 
@@ -72,6 +72,11 @@ const alarmDevices = computed(() => {
       <el-card class="energy-card">
         <span>园区累计能耗</span>
         <strong>{{ totalEnergy }}</strong>
+      </el-card>
+
+      <el-card class="chart-card">
+        <template #header>设备能耗对比</template>
+        <EnergyBarChart />
       </el-card>
 
       <el-card class="alarm-card">
@@ -179,6 +184,10 @@ const alarmDevices = computed(() => {
 
 .energy-card,
 .alarm-card {
+  margin-top: 16px;
+}
+
+.chart-card {
   margin-top: 16px;
 }
 
