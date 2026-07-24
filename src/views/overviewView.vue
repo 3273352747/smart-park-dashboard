@@ -36,7 +36,9 @@ const totalEnergy = computed(() => {
 })
 
 const alarmDevices = computed(() => {
-    return deviceManager.filter((device) => device.alarmCount > 0)
+    return deviceManager.filter((device) => {
+      return device.status === '告警中'
+    })
 })
 </script>
 
