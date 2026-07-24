@@ -3,6 +3,7 @@ import { computed } from "vue"
 import { deviceManager } from "../data/devices"
 import { RouterLink } from "vue-router"
 import EnergyBarChart from "../components/EnergyBarChart.vue"
+import DeviceStatusChart from "../components/DeviceStatusChart.vue"
 
 const totalDevices = computed(() => deviceManager.length)
 
@@ -74,10 +75,17 @@ const alarmDevices = computed(() => {
         <strong>{{ totalEnergy }}</strong>
       </el-card>
 
-      <el-card class="chart-card">
-        <template #header>设备能耗对比</template>
+      <div class="chart-grid">
+      <el-card>
+        <template #header><span>设备能耗对比</span></template>
         <EnergyBarChart />
       </el-card>
+
+      <el-card>
+        <template #header><span>设备状态分布</span></template>
+        <DeviceStatusChart />
+      </el-card>
+    </div>
 
       <el-card class="alarm-card">
         <template #header>当前告警设备</template>
@@ -187,7 +195,10 @@ const alarmDevices = computed(() => {
   margin-top: 16px;
 }
 
-.chart-card {
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 16px;
   margin-top: 16px;
 }
 
