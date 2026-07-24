@@ -1,5 +1,31 @@
-# Vue 3 + Vite
+# 智慧园区运营数据可视化平台
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+基于 Vue 3 的前端可视化学习项目，模拟智慧园区中的设备监控、工单管理和运营数据查询场景。
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 项目功能
+
+- 运营总览：设备总数、运行状态统计、告警设备列表
+- 数据可视化：设备能耗柱状图、状态分布环形图、近 7 日能耗趋势图
+- 设备管理：状态筛选、关键字搜索、设备详情抽屉
+- 工单管理：新建、编辑、删除、表单校验、唯一工单编号生成
+- 数据查询：日期筛选、状态筛选、分页、加载状态、失败重试
+- 路由联动：从告警设备跳转到设备页，并自动筛选告警中设备
+
+## 技术栈
+
+- Vue 3
+- Vue Router
+- Element Plus
+- Apache ECharts
+- Vite
+- Git
+
+## 项目结构
+
+```text
+src/
+  api/          模拟异步接口
+  components/   可复用组件和图表组件
+  data/         模拟设备与趋势数据
+  router/       路由配置
+  views/        页面组件
