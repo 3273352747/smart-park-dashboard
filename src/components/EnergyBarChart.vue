@@ -1,15 +1,22 @@
 <script setup>
-import { ref,onMounted,onBeforeUnmount } from 'vue'
+import { ref,onMounted,onBeforeUnmount,watch } from 'vue'
 import * as echarts from 'echarts'
-import { deviceManager } from '../data/devices'
 
 const chartRef = ref(null)
 let chartInstance = null
 
-function renderChart() {
-    const devices = [...deviceManager]
+const props = defineProps({
+    devices: {
+        type: Array,
+        default: () => [],
+    },
+})
 
-    chartInstance = echarts.init(chartRef.value)
+function renderChart() {
+
+    if(!chartInstance){
+        chartInstance = echarts.init(chartRef.value)
+    }
 
     chartInstance.setOption({
         tooltip: {
@@ -25,7 +32,7 @@ function renderChart() {
 
         xAxis: {
             type: 'category',
-            data: devices.map((device) => device.name),
+            data: props.devices.map((device) => device.name),
             axisLabel: {
                 interval: 0,
             },
@@ -40,7 +47,7 @@ function renderChart() {
             {
                name: '当前能耗',
                type: 'bar',
-               data: devices.map((device) => device.energy),
+               data: props.devices.map((device) => device.energy),
                barWidth: 36,
                itemStyle: {
                 color: '#2e74b5',
@@ -54,6 +61,14 @@ function renderChart() {
 function resizeChart() {
     chartInstance?.resize()
 }
+
+watch(
+    () => props.devices,
+    () => {
+        renderChart()
+    },
+    { deep: true }
+)
 
 onMounted(() => {
     renderChart()

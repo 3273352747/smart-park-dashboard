@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue"
+import { computed,ref } from "vue"
 import { deviceManager } from "../data/devices"
 import { RouterLink,useRouter } from "vue-router"
 import EnergyBarChart from "../components/EnergyBarChart.vue"
@@ -7,6 +7,22 @@ import DeviceStatusChart from "../components/DeviceStatusChart.vue"
 import EnergyTrendChart from "../components/EnergyTrendChart.vue"
 
 const router = useRouter()
+
+const selectedRegion = ref('全部')
+const selectedType = ref('全部')
+
+const regionOptions = ['全部','东区','西区']
+const typeOptions = ['全部','配电设备','空调设备','安防设备']
+
+const filteredOverviewDevices = computed(() => {
+  return deviceManager.filter((device) => {
+    const regionMatched = selectedRegion.value === '全部' || device.region === selectedRegion.value
+
+    const typeMatched = selectedType.value === '全部' || device.type === selectedType.value
+
+    return regionMatched && typeMatched
+  })
+})
 
 function goToAlarmDevices() {
   router.push({
@@ -17,26 +33,26 @@ function goToAlarmDevices() {
   })
 }
 
-const totalDevices = computed(() => deviceManager.length)
+const totalDevices = computed(() => filteredOverviewDevices.value.length)
 
 const runningCount = computed(() => {
-  return deviceManager.filter((device) => device.status === '运行中').length
+  return filteredOverviewDevices.value.filter((device) => device.status === '运行中').length
 })
 
 const offlineCount = computed(() => {
-  return deviceManager.filter((device) => device.status === '离线').length
+  return filteredOverviewDevices.value.filter((device) => device.status === '离线').length
 })
 
 const alarmingCount = computed(() =>{
-  return deviceManager.filter((device) => device.status === '告警中').length
+  return filteredOverviewDevices.value.filter((device) => device.status === '告警中').length
 })
 
 const totalEnergy = computed(() => {
-    return deviceManager.reduce((sum,device) => sum + device.energy,0)
+    return filteredOverviewDevices.value.reduce((sum,device) => sum + device.energy,0)
 })
 
 const alarmDevices = computed(() => {
-    return deviceManager.filter((device) => {
+    return filteredOverviewDevices.value.filter((device) => {
       return device.status === '告警中'
     })
 })
@@ -61,6 +77,32 @@ const alarmDevices = computed(() => {
       </nav>
 
       <h2>运营总览</h2>
+
+      <el-card class="filter-card">
+        <el-form inline>
+          <el-form-item label="园区区域">
+            <el-select v-model="selectedRegion" style="width: 140px">
+              <el-option
+              v-for="region in regionOptions"
+              :key="region"
+              :label="region"
+              :value="region"
+              />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="设备类型">
+            <el-select v-model="selectedType" style="width: 140px">
+              <el-option
+              v-for="type in typeOptions"
+              :key="type"
+              :label="type"
+              :value="type"
+              />
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </el-card>
 
       <div class="stats-grid">
     <el-card class="stat-card">
@@ -92,18 +134,18 @@ const alarmDevices = computed(() => {
       <div class="chart-grid">
       <el-card>
         <template #header><span>设备能耗对比</span></template>
-        <EnergyBarChart />
+        <EnergyBarChart :devices="filteredOverviewDevices" />
       </el-card>
 
       <el-card>
         <template #header><span>设备状态分布</span></template>
-        <DeviceStatusChart />
+        <DeviceStatusChart :devices="filteredOverviewDevices" />
       </el-card>
     </div>
 
     <el-card class="trend-card">
       <template #header>
-        <span>近 7 日园区总能耗趋势</span>
+        <span>近 7 日园区总能耗趋势（全园区）</span>
       </template>
       <EnergyTrendChart />
     </el-card>
@@ -235,7 +277,12 @@ const alarmDevices = computed(() => {
     border-bottom: 1px solid #e4e7ec;
     cursor: pointer;
 }
+
 .alarm-item:hover {
   background: #f8fafc;
+}
+
+.filter-card {
+  margin: 16px 0;
 }
 </style>
