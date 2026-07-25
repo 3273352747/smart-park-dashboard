@@ -29,3 +29,35 @@ src/
   data/         模拟设备与趋势数据
   router/       路由配置
   views/        页面组件
+```
+
+## 本地运行
+
+```powershell
+npm install
+npm run dev
+```
+
+## 测试记录
+
+功能测试用例与缺陷记录见：[测试用例文档](docs/test-cases.md)。
+
+## 项目截图
+
+### 运营总览
+
+![运营总览](docs/images/overview-top.png)
+![运营总览](docs/images/overview-charts.png)
+
+### 设备管理
+
+![设备管理](docs/images/device-management.png)
+
+### 工单管理
+
+![工单管理](docs/images/work-order.png)
+![工单管理](docs/images/new-work-order.png)
+
+### 数据查询
+
+![数据查询](docs/images/data-query.png)
