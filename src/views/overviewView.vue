@@ -5,6 +5,7 @@ import { RouterLink,useRouter } from "vue-router"
 import EnergyBarChart from "../components/EnergyBarChart.vue"
 import DeviceStatusChart from "../components/DeviceStatusChart.vue"
 import EnergyTrendChart from "../components/EnergyTrendChart.vue"
+import DeviceHealthGauge from "../components/DeviceHealthGauge.vue"
 
 const router = useRouter()
 
@@ -143,12 +144,21 @@ const alarmDevices = computed(() => {
       </el-card>
     </div>
 
-    <el-card class="trend-card">
+    <div class="lower-chart-grid">
+      <el-card>
       <template #header>
         <span>近 7 日园区总能耗趋势（全园区）</span>
       </template>
       <EnergyTrendChart />
     </el-card>
+
+    <el-card>
+      <template #header>
+        <span>设备健康度</span>
+      </template>
+      <DeviceHealthGauge :devices="filteredOverviewDevices" />
+    </el-card>
+    </div>
 
       <el-card class="alarm-card">
         <template #header>当前告警设备</template>
@@ -265,7 +275,10 @@ const alarmDevices = computed(() => {
   margin-top: 16px;
 }
 
-.trend-card {
+.lower-chart-grid {
+  display: grid;
+  grid-template-columns: minmax(0,2fr) minmax(280px,1fr);
+  gap: 16px;
   margin-top: 16px;
 }
 
