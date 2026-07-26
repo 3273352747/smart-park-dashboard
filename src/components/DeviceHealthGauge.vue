@@ -1,7 +1,6 @@
 <script setup>
 import { ref,onMounted,onBeforeUnmount,watch } from 'vue'
 import * as echarts from 'echarts'
-import { formatter } from 'element-plus'
 
 const props = defineProps({
     devices: {
@@ -113,7 +112,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
     window.removeEventListener('resize',resizeChart)
-    chartInstance?.dispoae()
+    chartInstance?.dispose()
 })
 </script>
 

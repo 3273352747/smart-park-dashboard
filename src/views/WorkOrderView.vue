@@ -1,9 +1,11 @@
 <script setup>
-import {ref, reactive} from 'vue'
+import { ref, reactive,watch } from 'vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import { deviceManager } from '../data/devices'
 
-const workOrders = ref([{
+const STORAGE_KEY = 'smart-park-work-orders'
+const defaultWorkOrders = [
+    {
     id: 'WO-001',
     title: '1号配电设备日产巡检',
     device: '1号配电设备',
@@ -27,9 +29,38 @@ const workOrders = ref([{
     planDate: '2023-07-24',
     status: '待处理',
   },
-])
+]
 
-const nextOrderNumber = ref(4)
+function loadWorkOrders() {
+    try {
+        const savedOrders = localStorage.getItem(STORAGE_KEY)
+
+        return savedOrders
+        ? JSON.parse(savedOrders)
+        : defaultWorkOrders
+    } catch {
+        return defaultWorkOrders
+    }
+}
+
+const workOrders = ref(loadWorkOrders())
+
+const nextOrderNumber = ref(
+    Math.max(
+        0,
+        ...workOrders.value.map((order) => {
+            return Number(order.id.replace('WO-','')) || 0
+        })
+    ) + 1
+)
+
+watch(
+    workOrders,
+    (orders) => {
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(orders))
+    },
+    { deep: true }
+)
 
 const deviceOptions = deviceManager.map((device) => device.name)
 const priorityOptions = ['高','中','低']
