@@ -78,20 +78,10 @@ smart-park-dashboard/
 
 ## 本地运行
 
-确保本机已经安装 Node.js 和 npm，然后执行：
-
 ```powershell
-git clone https://github.com/3273352747/smart-park-dashboard.git
-cd smart-park-dashboard
 npm install
 npm run dev
-```
-
-生产构建与本地预览：
-
-```powershell
 npm run build
-npm run preview
 ```
 
 ## 测试与质量
