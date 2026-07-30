@@ -1,6 +1,6 @@
 <script setup>
 import { ref,onMounted,onBeforeUnmount } from 'vue'
-import * as echarts from 'echarts'
+import { init } from '../utils/echarts'
 import { energyTrendData } from '../data/energyTrend'
 
 const chartRef = ref(null)
@@ -8,7 +8,7 @@ const chartRef = ref(null)
 let chartInstance = null
 
 function renderChart() {
-    chartInstance = echarts.init(chartRef.value)
+    chartInstance = init(chartRef.value)
 
     chartInstance.setOption({
         tooltip: {

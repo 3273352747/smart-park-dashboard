@@ -1,11 +1,12 @@
 <script setup>
 import { computed,ref } from "vue"
 import { deviceManager } from "../data/devices"
-import { RouterLink,useRouter } from "vue-router"
+import { useRouter } from "vue-router"
 import EnergyBarChart from "../components/EnergyBarChart.vue"
 import DeviceStatusChart from "../components/DeviceStatusChart.vue"
 import EnergyTrendChart from "../components/EnergyTrendChart.vue"
 import DeviceHealthGauge from "../components/DeviceHealthGauge.vue"
+import DashboardLayout from "../components/DashboardLayout.vue"
 
 const router = useRouter()
 
@@ -60,22 +61,7 @@ const alarmDevices = computed(() => {
 </script>
 
 <template>
-  <section class="dashboard">
-    <header class="dashboard-header">
-      <div class="system-title">
-        <h1>智慧园区运营数据可视化平台</h1>
-      </div>
-
-      <RouterLink to="/" class="back-button">返回首页</RouterLink>
-    </header>
-
-    <main class="content-shell">
-      <nav class="page-nav">
-        <RouterLink to="/overview">运营总览</RouterLink>
-        <RouterLink to="/devices"> 设备管理</RouterLink>
-        <RouterLink to="/work-order">工单管理</RouterLink>
-        <RouterLink to="/data-query">数据查询</RouterLink>
-      </nav>
+    <DashboardLayout>
 
       <h2>运营总览</h2>
 
@@ -170,66 +156,11 @@ const alarmDevices = computed(() => {
             <el-tag type="danger">告警 {{ device.alarmCount }} 条</el-tag>
         </div>
       </el-card>
-    </main>
-  </section>
+    </DashboardLayout>
 </template>
     
 
 <style scoped>
-.dashboard {
-  min-height: 100vh;
-  padding: 32px 48px;
-  background: #f4f7fb;
-}
-
-.dashboard-header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.system-title {
-    grid-column: 2;
-    text-align: center;
-}
-
-.system-title h1 {
-    margin: 0;
-    color: #0b2545;
-}
-
-.back-button {
-    grid-column: 3;
-    justify-self: end;
-    padding: 10px 16px;
-    color: #fff;
-    background: #2e74b5;
-    border-radius: 4px;
-    text-decoration: none;
-}
-
-.content-shell {
-  max-width: 980px;
-  margin: 0 auto;
-}
-
-.page-nav {
-    display: flex;
-    gap: 24px;
-    margin: 0 0 24px;
-}
-
-.page-nav a {
-    color: #667085;
-    text-decoration: none;
-}
-
-.page-nav .router-link-active {
-    color: #2e74b5;
-    font-weight: 600;
-}
-
 .stats-grid{
   display: grid;
   grid-template-columns: repeat(4,1fr);
@@ -313,49 +244,6 @@ const alarmDevices = computed(() => {
 }
 
 @media (max-width: 768px) {
-  .dashboard {
-    padding: 20px 16px;
-  }
-
-  .dashboard-header {
-    grid-template-columns: 1fr auto;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .system-title {
-    grid-column: 1;
-    min-width: 0;
-    text-align: left;
-  }
-
-  .system-title h1 {
-    font-size: 22px;
-    line-height: 1.35;
-  }
-
-  .back-button {
-    grid-column: 2;
-    padding: 8px 12px;
-    white-space: nowrap;
-  }
-
-  .content-shell {
-    width: 100%;
-  }
-
-  .page-nav {
-    gap: 16px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    margin-bottom: 20px;
-    white-space: nowrap;
-  }
-
-  .page-nav a {
-    flex: 0 0 auto;
-  }
-
     h2 {
     font-size: 22px;
   }

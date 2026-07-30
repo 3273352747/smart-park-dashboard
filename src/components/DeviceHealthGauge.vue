@@ -1,6 +1,6 @@
 <script setup>
 import { ref,onMounted,onBeforeUnmount,watch } from 'vue'
-import * as echarts from 'echarts'
+import { init } from '../utils/echarts'
 
 const props = defineProps({
     devices: {
@@ -31,7 +31,7 @@ function getHealthScore(devices) {
 
 function renderChart() {
     if(!chartInstance){
-        chartInstance = echarts.init(chartRef.value)
+        chartInstance = init(chartRef.value)
     }
 
     const healthScore = getHealthScore(props.devices)

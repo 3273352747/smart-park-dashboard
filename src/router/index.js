@@ -1,39 +1,42 @@
-import { createRouter,createWebHistory } from "vue-router"
-import HomeView from '../views/HomeView.vue'
-import DeviceView from '../views/DeviceView.vue'
-import OverviewView from "../views/OverviewView.vue"
-import WorkOrderView from "../views/WorkOrderView.vue"
-import DataQueryView from "../views/DataQueryView.vue"
+import {
+  createRouter,
+  createWebHistory,
+} from 'vue-router'
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes: [
-        {
-            path: '/',
-            name: 'home',
-            component: HomeView
-        },
-        {
-            path: '/devices',
-            name: 'devices',
-            component: DeviceView,
-        },
-        {
-            path: '/overview',
-            name: 'overview',
-            component: OverviewView,
-        },
-        {
-            path: '/work-order',
-            name: 'work-order',
-            component: WorkOrderView,
-        },
-        {
-            path: '/data-query',
-            name: 'data-query',
-            component: DataQueryView,
-        },
-    ],
+  history: createWebHistory(),
+
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('../views/HomeView.vue'),
+    },
+    {
+      path: '/overview',
+      name: 'overview',
+      component: () => import('../views/OverviewView.vue'),
+    },
+    {
+      path: '/devices',
+      name: 'devices',
+      component: () => import('../views/DeviceView.vue'),
+    },
+    {
+      path: '/work-order',
+      name: 'work-order',
+      component: () => import('../views/WorkOrderView.vue'),
+    },
+    {
+      path: '/data-query',
+      name: 'data-query',
+      component: () => import('../views/DataQueryView.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
+    },
+  ],
 })
 
 export default router

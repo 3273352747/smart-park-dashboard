@@ -1,6 +1,6 @@
 <script setup>
 import { ref,onMounted,onBeforeUnmount,watch } from 'vue'
-import * as echarts from 'echarts'
+import { init } from '../utils/echarts'
 
 const chartRef = ref(null)
 let chartInstance = null
@@ -15,7 +15,7 @@ const props = defineProps({
 function renderChart() {
 
     if(!chartInstance){
-        chartInstance = echarts.init(chartRef.value)
+        chartInstance = init(chartRef.value)
     }
 
     chartInstance.setOption({
