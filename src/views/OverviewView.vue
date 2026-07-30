@@ -165,7 +165,7 @@ const alarmDevices = computed(() => {
 
         <p v-if="alarmDevices.length === 0">当前没有告警设备</p>
 
-        <div v-for="device in alarmDevices" :key="device.code" class="alarm-item" @click="goToAlarmDevices">
+        <div v-for="device in alarmDevices" :key="device.code" type="button" class="alarm-item" @click="goToAlarmDevices">
             <span>{{ device.name }}</span>
             <el-tag type="danger">告警 {{ device.alarmCount }} 条</el-tag>
         </div>
@@ -289,6 +289,19 @@ const alarmDevices = computed(() => {
     padding: 12px 0;
     border-bottom: 1px solid #e4e7ec;
     cursor: pointer;
+    width: 100%;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    background: transparent;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+}
+
+.alarm-item:focus-visible {
+  outline: 2px solid #2e74b5;
+  outline-offset: 2px;
 }
 
 .alarm-item:hover {
@@ -297,5 +310,115 @@ const alarmDevices = computed(() => {
 
 .filter-card {
   margin: 16px 0;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 20px 16px;
+  }
+
+  .dashboard-header {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .system-title {
+    grid-column: 1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .system-title h1 {
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  .back-button {
+    grid-column: 2;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .content-shell {
+    width: 100%;
+  }
+
+  .page-nav {
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+    white-space: nowrap;
+  }
+
+  .page-nav a {
+    flex: 0 0 auto;
+  }
+
+    h2 {
+    font-size: 22px;
+  }
+
+  .filter-card :deep(.el-card__body) {
+    padding: 16px;
+  }
+
+  .filter-card :deep(.el-form-item) {
+    display: flex;
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+
+  .filter-card :deep(.el-form-item:last-child) {
+    margin-bottom: 0;
+  }
+
+  .filter-card :deep(.el-form-item__label) {
+    width: 72px;
+    justify-content: flex-start;
+  }
+
+  .filter-card :deep(.el-form-item__content) {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .filter-card :deep(.el-select) {
+    width: 100% !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .stat-card strong,
+  .energy-card strong {
+    font-size: 24px;
+  }
+
+  .stat-card :deep(.el-card__body),
+  .energy-card :deep(.el-card__body) {
+    padding: 14px;
+  }
+
+    .chart-grid,
+  .lower-chart-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .chart-grid :deep(.el-card__body),
+  .lower-chart-grid :deep(.el-card__body) {
+    padding: 12px;
+  }
+
+  .chart-grid :deep(.chart),
+  .lower-chart-grid :deep(.chart) {
+    height: 280px;
+  }
 }
 </style>

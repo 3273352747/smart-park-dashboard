@@ -29,13 +29,13 @@ const filteredDevices = computed(() => {
     })
   }
 
-  const searchText = keyword.value.trim()
+  const searchText = keyword.value.trim().toLowerCase()
 
   if(searchText) {
     result = result.filter((device) => {
       return (
-        device.name.includes(searchText) || 
-        device.code.includes(searchText)
+        device.name.toLocaleLowerCase().includes(searchText) ||
+        device.code.toLocaleLowerCase().includes(searchText)
       )
     })
   }
@@ -116,7 +116,7 @@ function getStatusTagType(status) {
       />
 
       <el-card class="table-card">
-        <el-table :data="filteredDevices" border style="width:100%">
+        <el-table class="device-table" :data="filteredDevices" border empty-text="暂无符合条件的设备" style="width:100%">
             <el-table-column prop="name" label="设备名称"/>
             <el-table-column prop="code" label="设备编号"/>
             <el-table-column prop="energy" label="能耗(kWh)"/>
@@ -140,7 +140,7 @@ function getStatusTagType(status) {
         </el-table>
       </el-card>
 
-      <el-drawer v-model="detailVisible" title="设备详情" size="380px">
+      <el-drawer v-model="detailVisible" title="设备详情" size="90%" style="max-width: 380px;">
         <el-descriptions v-if="selectedDevice" :column="1" border>
           <el-descriptions-item label="设备名称">
             {{ selectedDevice.name }}
@@ -165,8 +165,7 @@ function getStatusTagType(status) {
         </el-descriptions-item>
         </el-descriptions>
       </el-drawer>
-        
-    <p v-if="filteredDevices.length === 0" class="empty-text">暂无符合条件的设备</p> 
+
   </main>
   </template>
 
@@ -227,14 +226,56 @@ function getStatusTagType(status) {
   color: #dc2626;
 }
 
-.empty-text{
-  margin-top: 24px;
-  color: #98a2b3;
-  text-align: center;
-}
-
 .search-input {
   width: 280px;
   margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  main {
+    width: 100%;
+    margin: 24px 0 0;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .stat-card {
+    padding: 0;
+  }
+
+  :deep(.stat-card .el-card__body) {
+    padding: 14px;
+  }
+
+  .stat-card strong {
+    font-size: 24px;
+  }
+
+  .search-input {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+    .table-card {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .table-card :deep(.el-card__body) {
+    overflow-x: auto;
+    padding: 12px;
+  }
+
+  .device-table {
+    min-width: 720px;
+  }
 }
 </style>

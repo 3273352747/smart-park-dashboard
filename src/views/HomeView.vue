@@ -31,4 +31,20 @@ p {
   border-radius: 4px;
   text-decoration: none;
 }
+
+@media (max-width: 768px) {
+  .page {
+    padding: 48px 16px 24px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.35;
+  }
+
+  p {
+    margin: 16px 0 24px;
+  }
+}
 </style>

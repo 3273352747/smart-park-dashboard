@@ -78,4 +78,49 @@ import DeviceList from '../components/DeviceList.vue'
     color: #2e74b5;
     font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 20px 16px;
+  }
+
+  .dashboard-header {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .system-title {
+    grid-column: 1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .system-title h1 {
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  .back-button {
+    grid-column: 2;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .content-shell {
+    width: 100%;
+  }
+
+  .page-nav {
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+    white-space: nowrap;
+  }
+
+  .page-nav a {
+    flex: 0 0 auto;
+  }
+}
 </style>

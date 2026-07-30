@@ -27,7 +27,7 @@ function renderChart() {
             left: 48,
             right: 24,
             top: 32,
-            bottom: 48,
+            bottom: 64,
         },
 
         xAxis: {
@@ -35,6 +35,14 @@ function renderChart() {
             data: props.devices.map((device) => device.name),
             axisLabel: {
                 interval: 0,
+                fontSize: 11,
+                lineHeight: 16,
+                formatter(value) {
+                    return value.replace(
+                        '配电设备',
+                        '\n配电设备'
+                    )
+                },
             },
         },
 

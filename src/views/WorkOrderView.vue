@@ -31,15 +31,55 @@ const defaultWorkOrders = [
   },
 ]
 
+function createDefaultWorkOrders() {
+    return defaultWorkOrders.map((order) => {
+        return { ...order }
+    })
+}
+
+function isValidWorkOrder(order) {
+    return (
+        order &&
+        typeof order === 'object' &&
+        typeof order.id === 'string' &&
+        typeof order.title === 'string' &&
+        typeof order.device === 'string' &&
+        typeof order.priority === 'string' &&
+        typeof order.planDate === 'string' &&
+        typeof order.status === 'string'
+    )
+}
+
 function loadWorkOrders() {
     try {
         const savedOrders = localStorage.getItem(STORAGE_KEY)
 
-        return savedOrders
-        ? JSON.parse(savedOrders)
-        : defaultWorkOrders
-    } catch {
-        return defaultWorkOrders
+        if(!savedOrders) {
+            return createDefaultWorkOrders()
+        }
+        const parsedOrders = JSON.parse(savedOrders)
+
+        const isValidData =
+            Array.isArray(parsedOrders) &&
+            parsedOrders.every(isValidWorkOrder)
+
+        if (!isValidData) {
+            localStorage.removeItem(STORAGE_KEY)
+            return createDefaultWorkOrders()
+        }
+
+        return parsedOrders
+
+    } catch (error) {
+        console.warn('工单缓存读取失败，已恢复默认数据：', error)
+
+        try {
+            localStorage.removeItem(STORAGE_KEY)
+        } catch {
+
+        }
+
+        return createDefaultWorkOrders()
     }
 }
 
@@ -57,7 +97,11 @@ const nextOrderNumber = ref(
 watch(
     workOrders,
     (orders) => {
-        localStorage.setItem(STORAGE_KEY,JSON.stringify(orders))
+        try {
+            localStorage.setItem(STORAGE_KEY,JSON.stringify(orders))
+        } catch (error) {
+            console.warn('工单数据保存失败：', error)
+        }
     },
     { deep: true }
 )
@@ -206,7 +250,7 @@ async function handleDelete(row) {
       </div>
 
       <el-card class="table-card">
-        <el-table :data="workOrders" border style="width: 100%" empty-text="暂无工单，请点击“新建工单”添加">
+        <el-table class="work-order-table" :data="workOrders" border style="width: 100%" empty-text="暂无工单，请点击“新建工单”添加">
             <el-table-column prop="id" label="工单编号" width="110" />
             <el-table-column prop="title" label="工单标题" min-width="220" />
             <el-table-column prop="device" label="关联设备" min-width="160" />
@@ -217,7 +261,7 @@ async function handleDelete(row) {
                 </template>
             </el-table-column>
 
-        <el-table-column prop="planDate" label="计划日期" width="130%" />
+        <el-table-column prop="planDate" label="计划日期" width="130" />
 
         <el-table-column label="状态" width="110">
             <template #default="{row}">
@@ -247,7 +291,7 @@ async function handleDelete(row) {
         </el-table>
       </el-card>
 
-      <el-dialog v-model="dialogVisible" :title="dialogTitle" width="520px">
+      <el-dialog class="work-order-dialog" v-model="dialogVisible" :title="dialogTitle" width="520px">
         <el-form
         ref="formRef"
         :model="workOrderForm"
@@ -304,7 +348,7 @@ async function handleDelete(row) {
 
     <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">确定创建</el-button>
+        <el-button type="primary" @click="handleSubmit">{{ editingId ? '保存修改' : '确定创建' }}</el-button>
     </template>
       </el-dialog>
       </main>
@@ -380,5 +424,81 @@ async function handleDelete(row) {
 
 .table-card {
     margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 20px 16px;
+  }
+
+  .dashboard-header {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .system-title {
+    grid-column: 1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .system-title h1 {
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  .back-button {
+    grid-column: 2;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .content-shell {
+    width: 100%;
+  }
+
+  .page-nav {
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+    white-space: nowrap;
+  }
+
+  .page-nav a {
+    flex: 0 0 auto;
+  }
+
+    .page-title-row {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .page-title-row h2 {
+    font-size: 22px;
+  }
+
+  .page-title-row :deep(.el-button) {
+    flex: 0 0 auto;
+  }
+
+  :global(.work-order-dialog) {
+    width: calc(100% - 32px) !important;
+  }
+
+    .table-card {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .table-card :deep(.el-card__body) {
+    overflow-x: auto;
+    padding: 12px;
+  }
+
+  .work-order-table {
+    min-width: 980px;
+  }
 }
 </style>

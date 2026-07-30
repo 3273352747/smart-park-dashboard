@@ -157,7 +157,8 @@ watch(
         </template>
     </el-result>
         <template v-if="!errorMessage">
-        <el-table 
+        <el-table
+        class="query-table" 
         v-loading="loading"
         element-loading-text="数据加载中..."
         :data="paginatedDevices"
@@ -264,5 +265,142 @@ watch(
     display: flex;
     justify-content: flex-end;
     margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 20px 16px;
+  }
+
+  .dashboard-header {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .system-title {
+    grid-column: 1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .system-title h1 {
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  .back-button {
+    grid-column: 2;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .content-shell {
+    width: 100%;
+  }
+
+  .page-nav {
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+    white-space: nowrap;
+  }
+
+  .page-nav a {
+    flex: 0 0 auto;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+    .query-card :deep(.el-card__body) {
+    padding: 16px;
+  }
+
+  .query-card :deep(.el-form) {
+    display: block;
+  }
+
+  .query-card :deep(.el-form-item) {
+    display: flex;
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+
+  .query-card :deep(.el-form-item__label) {
+    width: 72px;
+    justify-content: flex-start;
+  }
+
+  .query-card :deep(.el-form-item__content) {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .query-card :deep(.el-date-editor),
+  .query-card :deep(.el-select) {
+    width: 100% !important;
+  }
+
+  .query-card :deep(.el-form-item:last-child) {
+    margin-bottom: 0;
+  }
+
+  .query-card :deep(.el-form-item:last-child .el-form-item__content) {
+    margin-left: 72px;
+  }
+
+    .query-card :deep(.el-card__body) {
+    padding: 16px;
+  }
+
+  .query-card :deep(.el-form-item) {
+    display: flex;
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+
+  .query-card :deep(.el-form-item__label) {
+    width: 72px;
+    justify-content: flex-start;
+  }
+
+  .query-card :deep(.el-form-item__content) {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .query-card :deep(.el-date-editor),
+  .query-card :deep(.el-select) {
+    width: 100% !important;
+  }
+
+  .query-card :deep(.el-form-item:last-child) {
+    margin-bottom: 0;
+  }
+
+  .query-card :deep(.el-form-item:last-child .el-form-item__content) {
+    margin-left: 72px;
+  }
+
+    .table-card {
+    width: 100%;
+  }
+
+  .table-card :deep(.el-card__body) {
+    overflow-x: auto;
+    padding: 12px;
+  }
+
+  .query-table {
+    min-width: 760px;
+  }
+
+  .pagination-wrapper {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
 }
 </style>

@@ -32,4 +32,21 @@ const emit = defineEmits(['change'])
   color: #344054;
   font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .toolbar {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .toolbar-label {
+    flex: 0 0 100%;
+  }
+
+  .toolbar :deep(.el-button + .el-button) {
+    margin-left: 0;
+  }
+}
 </style>
