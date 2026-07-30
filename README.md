@@ -46,6 +46,7 @@
 | 构建工具 | Vite |
 | 数据存储 | LocalStorage、本地 Mock 数据 |
 | 版本管理 | Git、GitHub |
+| 自动化测试 | Vitest、Vue Test Utils、JSDOM |
 
 ## 实现亮点
 
@@ -56,6 +57,11 @@
 - 分离表单输入条件与已提交查询条件，避免输入过程中直接改变查询结果
 - 使用表单校验、唯一编号生成和本地持久化完成工单管理闭环
 - 编写并执行 23 条功能测试用例，定位并修复 7 个真实功能缺陷
+- 抽取 `DashboardLayout` 统一多个业务页面的标题、导航和响应式布局
+- 使用路由懒加载拆分业务页面，并对 Element Plus 和 ECharts 实施按需引入
+- 公共入口包由约 990 kB 降至约 40 kB，运营总览包由约 1126 kB 降至约 570 kB
+- 对 LocalStorage 缓存进行 JSON 解析和数据结构校验，异常时自动清理并恢复默认工单
+- 使用 Vitest 和 Vue Test Utils 编写组件通信及工单持久化单元测试
 
 ## 质量保障与问题复盘
 
@@ -84,11 +90,14 @@ smart-park-dashboard/
 │  ├─ components/      通用组件与图表组件
 │  ├─ data/            设备及趋势模拟数据
 │  ├─ router/          路由配置
+│  ├─ utils/           图表注册及工单存储工具
 │  ├─ views/           页面级组件
 │  ├─ App.vue          根组件
 │  └─ main.js          应用入口
+├─ tests/              Vitest 单元测试
 ├─ package.json
-└─ vite.config.js
+├─ vite.config.js
+└─ vitest.config.js
 ```
 
 ## 本地运行
@@ -96,12 +105,13 @@ smart-park-dashboard/
 ```powershell
 npm install
 npm run dev
+npm run test:run
 npm run build
 ```
 
 ## 测试与质量
 
-项目采用手工功能测试验证主要业务流程。
+项目采用手工功能测试与 Vitest 自动化单元测试相结合的方式，验证主要业务流程、组件通信和本地持久化异常处理。
 
 | 测试指标 | 结果 |
 | --- | ---: |
@@ -109,7 +119,10 @@ npm run build
 | 通过用例 | 23 条 |
 | 发现功能缺陷 | 7 个 |
 | 已修复并回归 | 7 个 |
-| 开发阶段问题记录 | 7 项 |
+| 开发阶段问题记录 | 8 项 |
+| 自动化测试文件 | 2 个 |
+| 自动化测试用例 | 5 条 |
+| 自动化测试结果 | 5 条通过 |
 
 详细步骤、预期结果和缺陷分析见 [功能测试与缺陷记录](docs/test-cases.md)。
 
@@ -147,5 +160,5 @@ npm run build
 
 - 接入真实后端 API，并统一封装请求和异常处理
 - 增加登录鉴权、角色权限与操作日志
-- 使用 Vitest 或 Playwright 补充自动化测试
-- 按需引入 Element Plus 和 ECharts，优化生产构建体积
+- 使用 Playwright 补充跨页面端到端测试
+- 接入 GitHub Actions，自动执行单元测试和生产构建

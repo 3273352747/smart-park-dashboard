@@ -3,85 +3,10 @@ import { ref, reactive,watch } from 'vue'
 import { ElMessage,ElMessageBox } from 'element-plus'
 import { deviceManager } from '../data/devices'
 import DashboardLayout from '../components/DashboardLayout.vue'
-
-const defaultWorkOrders = [
-    {
-    id: 'WO-001',
-    title: '1号配电设备日产巡检',
-    device: '1号配电设备',
-    priority: '中',
-    planDate: '2023-07-20',
-    status: '待处理',
-},
-{
-    id: 'WO-002',
-    title: '3号配电设备告警检查',
-    device: '3号配电设备',
-    priority: '高',
-    planDate: '2023-07-21',
-    status: '处理中',
-  },
-  {
-    id: 'WO-003',
-    title: '园区配电设备台账核对',
-    device: '5号配电设备',
-    priority: '低',
-    planDate: '2023-07-24',
-    status: '待处理',
-  },
-]
-
-function createDefaultWorkOrders() {
-    return defaultWorkOrders.map((order) => {
-        return { ...order }
-    })
-}
-
-function isValidWorkOrder(order) {
-    return (
-        order &&
-        typeof order === 'object' &&
-        typeof order.id === 'string' &&
-        typeof order.title === 'string' &&
-        typeof order.device === 'string' &&
-        typeof order.priority === 'string' &&
-        typeof order.planDate === 'string' &&
-        typeof order.status === 'string'
-    )
-}
-
-function loadWorkOrders() {
-    try {
-        const savedOrders = localStorage.getItem(STORAGE_KEY)
-
-        if(!savedOrders) {
-            return createDefaultWorkOrders()
-        }
-        const parsedOrders = JSON.parse(savedOrders)
-
-        const isValidData =
-            Array.isArray(parsedOrders) &&
-            parsedOrders.every(isValidWorkOrder)
-
-        if (!isValidData) {
-            localStorage.removeItem(STORAGE_KEY)
-            return createDefaultWorkOrders()
-        }
-
-        return parsedOrders
-
-    } catch (error) {
-        console.warn('工单缓存读取失败，已恢复默认数据：', error)
-
-        try {
-            localStorage.removeItem(STORAGE_KEY)
-        } catch {
-
-        }
-
-        return createDefaultWorkOrders()
-    }
-}
+import {
+  loadWorkOrders,
+  WORK_ORDER_STORAGE_KEY,
+} from '../utils/workOrders'
 
 const workOrders = ref(loadWorkOrders())
 
@@ -98,7 +23,7 @@ watch(
     workOrders,
     (orders) => {
         try {
-            localStorage.setItem(STORAGE_KEY,JSON.stringify(orders))
+            localStorage.setItem(WORK_ORDER_STORAGE_KEY,JSON.stringify(orders))
         } catch (error) {
             console.warn('工单数据保存失败：', error)
         }
